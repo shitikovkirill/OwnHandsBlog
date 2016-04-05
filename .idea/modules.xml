@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Programming/PHP/Code/WP/superliv.no/wp-content/plugins/WP_Doctrine/.idea/WP_Doctrine.iml" filepath="$USER_HOME$/Programming/PHP/Code/WP/superliv.no/wp-content/plugins/WP_Doctrine/.idea/WP_Doctrine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Doctrine.iml" filepath="$PROJECT_DIR$/.idea/Doctrine.iml" />
     </modules>
   </component>
 </project>

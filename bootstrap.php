@@ -1,6 +1,9 @@
 <?php
 // bootstrap.php
+namespace Doctrine;
+
 require_once "vendor/autoload.php";
+
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
@@ -9,20 +12,28 @@ class Doctrine{
     protected static $_instance;
 
     private function __construct(){
-        if(!defined ('DB_HOST')){
-            require_once '../../../wp-config.php';
-        }
+
         $paths = array(__DIR__."/entity");
         $isDevMode = true;
 
-        // the connection configuration
         $dbParams = array(
             'driver'   => 'pdo_mysql',
-            'hostname' => DB_HOST,
-            'user'     => DB_USER,
-            'password' => DB_PASSWORD,
-            'dbname'   => DB_NAME,
+            'hostname' => 'localhost',
+            'user'     => 'root',
+            'password' => '',
+            'dbname'   => 'wp_superliv_no',
         );
+        if(defined ('DB_HOST')){
+            // the connection configuration
+            $dbParams = array(
+                'driver'   => 'pdo_mysql',
+                'hostname' => DB_HOST,
+                'user'     => DB_USER,
+                'password' => DB_PASSWORD,
+                'dbname'   => DB_NAME,
+                'charset'   =>'utf8'
+            );
+        }
 
         $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
         $this ->entityManager = EntityManager::create($dbParams, $config);
