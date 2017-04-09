@@ -1,75 +1,144 @@
 from django.db import models
+from django.utils import timezone
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from collections import defaultdict
 
-import datetime
-
-
-# Create your models here.
-class ArticleManage(models.Manager):
-    def archive(self):
-        date_list = Article.objects.datetimes('created_time', 'month', order='DESC')
-        date_dict = defaultdict(list)
-        for d in date_list:
-            date_dict[d.year].append(d.month)
-        return sorted(date_dict.items(), reverse=True)
+from redactor.fields import RedactorField
 
 
-class Article(models.Model):
-    STATUS_CHOICES = (
-        ('d', 'Draft'),
-        ('p', 'Published'),
-    )
+class TimeStampedModel(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
-    objects = ArticleManage()
+    class Meta:
+        abstract = True
 
-    title = models.CharField('title', max_length=70)
-    body = models.TextField('body')
-    created_time = models.DateTimeField('created_time')
-    last_modified_time = models.DateTimeField('last_modified_time')
-    status = models.CharField('status', max_length=1, choices=STATUS_CHOICES)
-    abstract = models.CharField('abstract', max_length=54, blank=True, null=True, help_text="abstract")
-    views = models.PositiveIntegerField('views', default=0)
-    likes = models.PositiveIntegerField('likes', default=0)
-    topped = models.BooleanField('topped', default=False)
 
-    category = models.ForeignKey('Category', verbose_name='category', null=True, on_delete=models.SET_NULL)
-    tags = models.ManyToManyField('Tag', verbose_name='tag', blank=True)
+class Author(models.Model):
+    user = models.ForeignKey(User, related_name='author')
+    avatar = models.ImageField(upload_to='gallery/avatar/%Y/%m/%d',
+                               null=True,
+                               blank=True,
+                               help_text="Upload your photo for Avatar")
+    about = models.TextField()
+    website = models.URLField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
+
+    def get_absolute_url(self):
+        return reverse('author_posts_page',
+                       kwargs={'username': self.user.username})
+
+    class Meta:
+        verbose_name = 'Detail Author'
+        verbose_name_plural = 'Authors'
+
+
+class Tag(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def get_total_posts(self):
+        return Post.objects.filter(tags__pk=self.pk).count()
+
+    class Meta:
+        verbose_name = 'Detail Tag'
+        verbose_name_plural = 'Tags'
+
+
+class PostQuerySet(models.QuerySet):
+
+    def published(self):
+        return self.filter(publish=True)
+
+
+class Post(TimeStampedModel):
+    author = models.ForeignKey(Author, related_name='author_post')
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True)
+    cover = models.ImageField(upload_to='gallery/covers/%Y/%m/%d',
+                              null=True,
+                              blank=True,
+                              help_text='Optional cover post')
+    description = RedactorField()
+    tags = models.ManyToManyField('Tag')
+    keywords = models.CharField(max_length=200, null=True, blank=True,
+                                help_text='Keywords sparate by comma.')
+    meta_description = models.TextField(null=True, blank=True)
+
+    publish = models.BooleanField(default=True)
+    objects = PostQuerySet.as_manager()
+
+    def get_absolute_url(self):
+        return reverse('detail_post_page', kwargs={'slug': self.slug})
+
+    @property
+    def total_visitors(self):
+        return Visitor.objects.filter(post__pk=self.pk).count()
 
     def __str__(self):
         return self.title
 
     class Meta:
-        ordering = ['-last_modified_time']
-
-    def get_absolute_url(self):
-        return reverse('blog:detail', kwargs={'article_id': self.pk})
-
-
-class Category(models.Model):
-    name = models.CharField('name', max_length=20)
-    created_time = models.DateTimeField('created_time', auto_now_add=True)
-    last_modified_time = models.DateTimeField('last_modified_time', auto_now=True)
-
-    def __str__(self):
-        return self.name
+        verbose_name = 'Detail Post'
+        verbose_name_plural = 'Posts'
+        ordering = ["-created"]
 
 
-class Tag(models.Model):
-    name = models.CharField('name', max_length=20)
-    created_time = models.DateTimeField('created_time', auto_now_add=True)
-    last_modified_time = models.DateTimeField('last_modified_time', auto_now=True)
+class Page(TimeStampedModel):
+    author = models.ForeignKey(Author, related_name='author_page')
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True)
+    description = RedactorField()
+    publish = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name
+        return self.title
+
+    # this will be an error in /admin
+    # def get_absolute_url(self):
+    #    return reverse("page_detail", kwargs={"slug": self.slug})
+
+    class Meta:
+        verbose_name = "Detail Page"
+        verbose_name_plural = "Pages"
+        ordering = ["-created"]
 
 
-class BlogComment(models.Model):
-    user_name = models.CharField('user_name', max_length=100)
-    user_email = models.EmailField('user_email', max_length=255)
-    body = models.TextField('body')
-    created_time = models.DateTimeField('created_time', auto_now_add=True)
-    article = models.ForeignKey('Article', verbose_name='article', on_delete=models.CASCADE)
+class Gallery(TimeStampedModel):
+    title = models.CharField(max_length=200)
+    attachment = models.FileField(upload_to='gallery/attachment/%Y/%m/%d')
 
     def __str__(self):
-        return self.body[:20]
+        return self.title
+
+    def check_if_image(self):
+        if self.attachment.name.split('.')[-1].lower() \
+                in ['jpg', 'jpeg', 'gif', 'png']:
+            return ('<img height="40" width="60" src="%s"/>' % self.attachment.url)
+        return ('<img height="40" width="60" src="/static/assets/icons/file-icon.png"/>')
+    check_if_image.short_description = 'Attachment'
+    check_if_image.allow_tags = True
+
+    class Meta:
+        verbose_name = 'Detail Gallery'
+        verbose_name_plural = 'Galleries'
+        ordering = ['-created']
+
+
+class Visitor(TimeStampedModel):
+    post = models.ForeignKey(Post, related_name='post_visitor')
+    ip = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.post.title
+
+    class Meta:
+        verbose_name = 'Detail Visitor'
+        verbose_name_plural = 'Visitors'
+        ordering = ['-created']
