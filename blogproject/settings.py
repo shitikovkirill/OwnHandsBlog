@@ -132,7 +132,7 @@ STATICFILES_DIRS = (
 )
 
 STATIC_URL = '/static/'
-#STATIC_ROOT = '/path/to/yourenv/blogproject/static'
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/path/to/yourenv/blogproject/media'
