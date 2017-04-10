@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
+try:
+    from .local_settings import *
+except ImportError:
+    pass
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -19,29 +24,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'site_secret_key'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = ['*']
-SITE_ID = 1
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'your_email@gmail.com'
-EMAIL_HOST_PASSWORD = 'password'
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 FILE_UPLOAD_MAX_MEMORY_SIZE = 35000000
-
-DISQUS_API_KEY = 'your_disqus_api_key'
-DISQUS_WEBSITE_SHORTNAME = 'your_disques_website_name'
-
-# No Recaptha SITE_KEY and SECRET KEY
-# https://www.google.com/recaptcha
-NORECAPTCHA_SITE_KEY = "key_key_key_key"
-NORECAPTCHA_SECRET_KEY = "key_key_key_key"
 
 # Application definition
 INSTALLED_APPS = [
@@ -110,38 +94,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'blogproject.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-"""
-
-# Config with postgresql - psql (9.5.4, server 9.3.14)
-# $ sudo su - postgres
-# $ psql
-# postgres=# CREATE DATABASE database_nme;
-# postgres=# CREATE USER database_user WITH PASSWORD 'password_user';
-# postgres=# GRANT ALL PRIVILEGES ON DATABASE database_nme TO database_user;
-# See this docs for more; https://goo.gl/9ONJKX
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'odoo',
-        'USER': 'odoo',
-        'PASSWORD': 'odoo',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
