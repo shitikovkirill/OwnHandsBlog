@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block title %}{{ object.title }} - {{ block.super }}{% endblock %}
-{% block canonical_url %}https://{{ request.get_host }}{% url 'detail_page' slug=object.slug %}{% endblock %}
 
 {% block meta_seo %}
   <meta name="description" content="{{ object.description|safe|striptags|truncatewords:"20" }}">

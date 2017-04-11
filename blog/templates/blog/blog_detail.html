@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block title %}{{ object.title }} - {{ block.super }}{% endblock %}
-{% block canonical_url %}https://{{ request.get_host }}{% url 'detail_post_page' slug=object.slug %}{% endblock %}
 
 {% block meta_seo %}
   <meta name="description" content="{% if object.meta_description %}{{ object.meta_description }}{% else %}{{ object.description|safe|striptags|truncatewords:"20" }}{% endif %}">
