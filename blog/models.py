@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
@@ -142,3 +141,11 @@ class Visitor(TimeStampedModel):
         verbose_name = 'Detail Visitor'
         verbose_name_plural = 'Visitors'
         ordering = ['-created']
+
+
+class SettingsModel(models.Model):
+    option = models.CharField(unique=True, max_length=255)
+    value = models.TextField(unique=False)
+
+    def __str__(self):
+        return self.value

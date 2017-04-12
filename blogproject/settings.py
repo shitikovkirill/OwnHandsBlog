@@ -60,7 +60,7 @@ SUIT_CONFIG = {
         '-',
         {'app': 'auth', 'label': 'Authentication',
             'icon': 'icon-lock', 'models': ('user', 'group')},
-        {'app': 'sites', 'label': 'Site Config', 'icon': 'icon-leaf'},
+        {'app': 'settings', 'label': 'Settings', 'icon': 'icon-leaf'},
     ),
     'LIST_PER_PAGE': 15
 }

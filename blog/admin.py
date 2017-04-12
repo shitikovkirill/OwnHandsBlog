@@ -130,6 +130,11 @@ class VisitorAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('post', 'ip', 'created', 'modified')
 
 
+class SettingsAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(SettingsModel, SettingsAdmin)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Post, PostAdmin)
