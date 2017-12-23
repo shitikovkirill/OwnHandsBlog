@@ -1,0 +1,22 @@
+--- 
+services:
+  web:
+    container_name: DjangoBlog
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python ./manage.py runserver 0.0.0.0:8888"
+    depends_on:
+      - "db"
+    volumes: 
+      - ".:/data"
+    environment:
+      DATABASE_URL: "postgres://postgres@db/postgres"
+    ports:
+      - "8888:8888"
+
+  db:
+    container_name: DjangoBlogDB
+    image: "postgres:9.6"
+version: "2"
+
