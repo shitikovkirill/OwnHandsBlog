@@ -12,3 +12,4 @@ pytz==2016.6.1
 six==1.10.0
 tablib==0.11.5
 PyGithub
+django-mptt

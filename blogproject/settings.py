@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'import_export',
 
     'blog',
+    'slides',
+    'mptt',
 ]
 
 # Django Suit configuration
@@ -56,6 +58,8 @@ SUIT_CONFIG = {
     'SEARCH_URL': '/admin/blog/post/',
     'MENU': (
         {'app': 'blog', 'label': 'Blog', 'models': ('post', 'tag', 'page', 'author', 'gallery', 'visitor'),
+            'icon': 'icon-align-left'},
+        {'app': 'slides', 'label': 'Slides', 'models': ('category', 'slide'),
             'icon': 'icon-align-left'},
         '-',
         {'app': 'auth', 'label': 'Authentication',
