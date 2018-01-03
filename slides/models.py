@@ -1,10 +1,11 @@
 from django.db import models
 import mptt
+from redactor.fields import RedactorField
 
 
 class Slide(models.Model):
     title = models.CharField(max_length=100)
-    content = models.TextField()
+    content = RedactorField()
     date_added = models.DateTimeField()
     categories = models.ManyToManyField('Category')
 
