@@ -7,5 +7,5 @@ from slides.views import *
 
 urlpatterns = [
     url(r'^$', HomepageView.as_view(), name='slides-home'),
-    url(r'^page/$', PageView.as_view(), name='slides-page'),
+    url(r'^page/(?P<category>\d+)/$', PageView.as_view(), name='slides-page'),
 ]

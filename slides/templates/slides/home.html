@@ -1,15 +1,23 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block css %}
+    {{ block.super }}
+    <link href="{% static "jquery-bonsai/jquery.bonsai.css" %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
     {% block message_info_homepage %}{% endblock %}
 
-    {{ object_list }}
-    {% comment %}{% load mptt_tags %}
-    <ul>
-        {% recursetree nodes %}
+    {% load mptt_tags %}
+    <ul id="category">
+        {% recursetree object_list %}
             <li>
-                {{ node.name }}
+                {% if node.count_of_slides %}
+                    <a href="{% url 'slides-page' category=node.id %}"> {{ node.name }}</a>
+                {% else %}
+                    {{ node.name }}
+                {% endif %}
                 {% if not node.is_leaf_node %}
                     <ul class="children">
                         {{ children }}
@@ -17,5 +25,13 @@
                 {% endif %}
             </li>
         {% endrecursetree %}
-    </ul>{% endcomment %}
+    </ul>
+{% endblock %}
+
+{% block footer_js %}
+    {{ block.super }}
+    {% load staticfiles %}<script src="{% static "jquery-bonsai/jquery.bonsai.js" %}"></script>
+    <script>
+    $('#category').bonsai();
+    </script>
 {% endblock %}

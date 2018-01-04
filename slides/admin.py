@@ -13,7 +13,7 @@ class SlideResource(resources.ModelResource):
 
 class SlideAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = SlideResource
-    list_display = ('title', 'content',)
+    list_display = ('title', 'date_added')
 
 
 admin.site.register(Slide, SlideAdmin)

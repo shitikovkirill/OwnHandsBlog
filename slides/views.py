@@ -25,10 +25,9 @@ class HomepageView(generic.ListView):
         return context_data
 
 
-class PageView(generic.ListView):
-    queryset = []
+class PageView(generic.DetailView):
+    model = Post
     template_name = 'slides/page.html'
-    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context_data = {}
