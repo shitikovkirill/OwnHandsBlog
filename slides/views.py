@@ -26,7 +26,7 @@ class HomepageView(generic.ListView):
 
 
 class PageView(generic.DetailView):
-    model = Post
+    model = Category
     template_name = 'slides/page.html'
 
     def get_context_data(self, **kwargs):

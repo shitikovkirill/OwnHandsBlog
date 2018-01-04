@@ -14,7 +14,7 @@
         {% recursetree object_list %}
             <li>
                 {% if node.count_of_slides %}
-                    <a href="{% url 'slides-page' category=node.id %}"> {{ node.name }}</a>
+                    <a href="{% url 'slides-page' pk=node.id %}"> {{ node.name }}</a>
                 {% else %}
                     {{ node.name }}
                 {% endif %}
