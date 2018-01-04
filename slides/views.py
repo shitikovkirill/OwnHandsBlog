@@ -29,6 +29,3 @@ class PageView(generic.DetailView):
     model = Category
     template_name = 'slides/page.html'
 
-    def get_context_data(self, **kwargs):
-        context_data = {}
-        return context_data

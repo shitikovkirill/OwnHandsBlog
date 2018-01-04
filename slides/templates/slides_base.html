@@ -7,13 +7,16 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				{% block content %}
+                {% endblock %}
 			</div>
 		</div>
-        {% load staticfiles %}<script src="{% static "reveal/js/reveal.js" %}"></script>
+        <link rel="stylesheet" href="{% static "highlight/styles/monokai-sublime.css" %}">
+        <script src="{% static "highlight/highlight.pack.js" %}"></script>
+        <script src="{% static "reveal/js/reveal.js" %}"></script>
 		<script>
 			Reveal.initialize();
+			hljs.initHighlightingOnLoad();
 		</script>
 	</body>
 </html>
