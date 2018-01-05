@@ -6,9 +6,20 @@ from redactor.fields import RedactorField
 class Slide(models.Model):
     title = models.CharField(max_length=100)
     content = RedactorField()
-    date_added = models.DateTimeField()
+    date_added = models.DateTimeField(auto_now=True)
     sequence = models.IntegerField(default=100)
     categories = models.ManyToManyField('Category')
+
+    def __str__(self):
+        return self.title
+
+
+class SubSlide(models.Model):
+    title = models.CharField(max_length=100)
+    content = RedactorField()
+    date_added = models.DateTimeField(auto_now=True)
+    sequence = models.IntegerField(default=100)
+    slides = models.ManyToManyField('Slide')
 
     def __str__(self):
         return self.title

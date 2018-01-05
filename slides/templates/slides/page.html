@@ -1,19 +1,17 @@
 {% extends "slides_base.html" %}
 
 {% block content %}
-  {% block message_info_homepage %}{% endblock %}
+    {% block message_info_homepage %}{% endblock %}
     {% for slide in object.slide_set.all %}
         <section>
             {% if slide.title %}
-            <h1>{{ slide.title }}</h1>
+                <h1>{{ slide.title }}</h1>
             {% endif %}
-        <pre><code>
-            $(document).ready(function() {
-              $('pre code').each(function(i, block) {
-                hljs.highlightBlock(block);
-              });
-            });
-        </code></pre>
+            {% if slide.content %}
+                <div class="content">
+                    {{ slide.content }}
+                </div>
+            {% endif %}
         </section>
     {% endfor %}
 {% endblock %}

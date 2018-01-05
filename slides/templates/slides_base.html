@@ -1,22 +1,32 @@
-{% load staticfiles %}<html>
-	<head>
+{% load staticfiles %}<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns#">
+<head>
+    {% block header %}
+        {% include "includes/main/header.html" %}
+    {% endblock %}
 
-		<link rel="stylesheet" href="{% static "reveal/css/reveal.css" %}">
-		<link rel="stylesheet" href="{% static "reveal/css/theme/white.css" %}">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				{% block content %}
-                {% endblock %}
-			</div>
-		</div>
-        <link rel="stylesheet" href="{% static "highlight/styles/monokai-sublime.css" %}">
-        <script src="{% static "highlight/highlight.pack.js" %}"></script>
-        <script src="{% static "reveal/js/reveal.js" %}"></script>
-		<script>
-			Reveal.initialize();
-			hljs.initHighlightingOnLoad();
-		</script>
-	</body>
+    <title>{% block title %}WebWave Slides{% endblock %}</title>
+
+    {% block meta_seo %}
+        {% include "includes/main/meta.html" %}
+    {% endblock %}
+    <link rel="stylesheet" href="{% static "reveal/css/reveal.css" %}">
+    <link rel="stylesheet" href="{% static "reveal/css/theme/white.css" %}">
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+
+<link rel="stylesheet" href="{% static "highlight/styles/monokai-sublime.css" %}">
+<script src="{% static "highlight/highlight.pack.js" %}"></script>
+<script src="{% static "reveal/js/reveal.js" %}"></script>
+<script>
+    Reveal.initialize();
+    hljs.initHighlightingOnLoad();
+</script>
+</body>
 </html>

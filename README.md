@@ -7,3 +7,8 @@ rename local_settings_example.py to local_settings.py
     docker-compose up
     docker-compose run --rm  web python manage.py createsuperuser
 ```
+
+Rebuild image
+```bash
+docker-compose build --no-cache
+```

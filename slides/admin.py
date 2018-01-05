@@ -5,6 +5,10 @@ from mptt.admin import MPTTModelAdmin
 from .models import Category, Slide
 
 
+class CategoryAdmin(MPTTModelAdmin):
+    prepopulated_fields = {'slug': ('name',)}
+
+
 class SlideResource(resources.ModelResource):
 
     class Meta:
@@ -14,7 +18,8 @@ class SlideResource(resources.ModelResource):
 class SlideAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = SlideResource
     list_display = ('title', 'date_added')
+    exclude = ('date_added', )
 
 
 admin.site.register(Slide, SlideAdmin)
-admin.site.register(Category, MPTTModelAdmin)
+admin.site.register(Category, CategoryAdmin)
