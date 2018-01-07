@@ -59,7 +59,7 @@ SUIT_CONFIG = {
     'MENU': (
         {'app': 'blog', 'label': 'Blog', 'models': ('post', 'tag', 'page', 'author', 'gallery', 'visitor'),
             'icon': 'icon-align-left'},
-        {'app': 'slides', 'label': 'Slides', 'models': ('category', 'slide'),
+        {'app': 'slides', 'label': 'Slides', 'models': ('category', 'slide', 'subslide'),
             'icon': 'icon-align-left'},
         '-',
         {'app': 'auth', 'label': 'Authentication',

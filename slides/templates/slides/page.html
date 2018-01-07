@@ -2,16 +2,16 @@
 
 {% block content %}
     {% block message_info_homepage %}{% endblock %}
-    {% for slide in object.slide_set.all %}
-        <section>
-            {% if slide.title %}
-                <h1>{{ slide.title }}</h1>
-            {% endif %}
-            {% if slide.content %}
-                <div class="content">
-                    {{ slide.content }}
-                </div>
-            {% endif %}
-        </section>
+    {% for slide in object.slides.all %}
+        {% if slide.sub_slides.all %}
+            <section>
+                {% include "slides/includes/slide.html" with slide=slide %}
+                {% for sub_slide in slide.sub_slides.all %}
+                    {% include "slides/includes/slide.html" with slide=sub_slide %}
+                {% endfor %}
+            </section>
+        {% else %}
+            {% include "slides/includes/slide.html" with slide=slide %}
+        {% endif %}
     {% endfor %}
 {% endblock %}

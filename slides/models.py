@@ -8,7 +8,7 @@ class Slide(models.Model):
     content = RedactorField()
     date_added = models.DateTimeField(auto_now=True)
     sequence = models.IntegerField(default=100)
-    categories = models.ManyToManyField('Category')
+    categories = models.ManyToManyField('Category', related_name='slides')
 
     def __str__(self):
         return self.title
@@ -19,7 +19,7 @@ class SubSlide(models.Model):
     content = RedactorField()
     date_added = models.DateTimeField(auto_now=True)
     sequence = models.IntegerField(default=100)
-    slides = models.ManyToManyField('Slide')
+    slides = models.ManyToManyField('Slide', related_name='sub_slides')
 
     def __str__(self):
         return self.title
@@ -31,7 +31,7 @@ class Category (models.Model):
     slug = models.SlugField(unique=True)
 
     def count_of_slides(self):
-        return len(self.slide_set.all())
+        return len(self.slides.all())
 
     def __str__(self):
         return self.name
