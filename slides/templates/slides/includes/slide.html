@@ -1,10 +1,10 @@
 <section>
     {% if slide.title %}
-        <h1>{{ slide.title }}</h1>
+        <h3>{{ slide.title }}</h3>
     {% endif %}
     {% if slide.content %}
         <div class="content">
-            {{ slide.content }}
+            {% autoescape off %}{{ slide.content }}{% endautoescape %}
         </div>
     {% endif %}
 </section>
